@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  *
  * @author luPinheiro
  */
-public class Vacuna extends VacunaAutorizacion implements IAutorizable{
+public class Vacuna extends VacunaAutorizacion{
 
     private String codigo;
     private String nombre;

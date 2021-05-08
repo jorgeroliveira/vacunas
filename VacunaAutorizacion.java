@@ -110,4 +110,8 @@ public abstract class VacunaAutorizacion implements IAutorizable {
 		return false;
 	}
 
+	public byte getFasesCompletadas() {
+		return fasesCompletadas;
+	}
+
 }
