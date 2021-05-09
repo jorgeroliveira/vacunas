@@ -33,11 +33,13 @@ public class Aplicacion {
 				case 2:
 					System.out.print("Introduce el código de una vacuna:");
 					String codigoVacuna = ControlData.leerString(input);
-					Vacuna v = almacenVacunas.buscarVacunaPorCodigo(codigoVacuna);
+					Vacuna v = almacenVacunas.buscarVacuna(codigoVacuna);
 					if (v == null) {
-						System.out.print("No existe una vacuna con el código introducido.");
+						System.out.println("No existe una vacuna con el código introducido.");
 					} else {
-						v.toString();
+						System.out.println("---Vacuna encontrada:");
+						System.out.println(v.toString());
+						System.out.println();
 					}
 					break;
 				case 3:
@@ -48,30 +50,25 @@ public class Aplicacion {
 				case 4:
 					System.out.print("Introduce el código de la vacuna a eliminar:");
 					String codigo = ControlData.leerString(input);
-					Vacuna vacuna = almacenVacunas.buscarVacunaPorCodigo(codigo);
-					if (vacuna == null) {
-						System.out.print("No existe una vacuna con el código introducido.");
-					} else {
-						almacenVacunas.eliminar(vacuna);
-					}
+                    almacenVacunas.eliminar(codigo);
 					break;
 				case 5:
 					introducirResultadoFases(almacenVacunas, input);
 					break;
 				case 6:
-
+                    autorizarRechazarVacuna(almacenVacunas, input);
 					break;
 				case 7:
-
+                    almacenVacunas.verVacunasAutorizadas();
 					break;
 				case 8:
-
+                    almacenVacunas.verVacunasRechazadas();
 					break;
 				case 9:
-
+					almacenVacunas.verVacunasPendientes();
 					break;
 				case 10:
-
+                    almacenVacunas.verUltimaFaseInvestigada();
 					break;
 
 				case 11:
@@ -88,11 +85,53 @@ public class Aplicacion {
 		} while (opcionMenu != 11);
 
 	}
+      
+        
+        private static void autorizarRechazarVacuna(VacAlmacen almacenVacunas, Scanner input){
+            System.out.print("Introduce el código de una vacuna:");
+            String codigoVacuna = ControlData.leerString(input);
+            Vacuna vacuna = almacenVacunas.buscarVacuna(codigoVacuna);
+            System.out.println(vacuna.toString());
+            
+            byte faseVacuna = vacuna.getFasesCompletadas();
+            boolean resultadoFaseVacuna = vacuna.getResultadoUltimaFase();
+            
+            if ((faseVacuna==3) && (resultadoFaseVacuna==true)) {
+            
+	            System.out.println("Autorizar o Rechazar esta vacuna (a/r)?");
+	            char accion = ControlData.leerChar(input);
+	            if (accion == 'a') {
+	                vacuna.autorizar();
+	            } else if (accion == 'r') {
+	                vacuna.rechazar();
+	            } else {
+	                System.out.println("No se a introducido ni una 'a' ni una 'r'.");
+	                System.out.println("No se autoriza ni rechaza la vacuna.");
+	            }
+            
+            } else {
+            	System.out.println("Esta vacuna no ha superado las tres fases. No se puede autorizar.");
+            	
+            	System.out.println("Desea Rechazar esta vacuna (s/n)?");
+	            char accion = ControlData.leerChar(input);
+	            if (accion == 's') {
+	            	vacuna.rechazar();
+	            	System.out.println("Vacuna rechazada.");
+	            } else {
+	            	System.out.println("Vacuna NO rechazada.");
+	            }
+            	
+            	
+            	
+            }
+                
+                
+        }
 
 	private static void introducirResultadoFases(VacAlmacen almacenVacunas, Scanner input) {
 		System.out.print("Introduce el código de una vacuna:");
 		String codigoVacuna = ControlData.leerString(input);
-		Vacuna vacuna = almacenVacunas.buscarVacunaPorCodigo(codigoVacuna);
+		Vacuna vacuna = almacenVacunas.buscarVacuna(codigoVacuna);
 		if (vacuna == null) {
 			System.out.println("No existe una vacuna con el código introducido.");
 		} else {
@@ -103,9 +142,11 @@ public class Aplicacion {
 			} else {
 				boolean resultadoUltimaFase = vacuna.getResultadoUltimaFase();
 				if (resultadoUltimaFase) {
-					System.out.print("Introduce el resultado de la fase:" + (fasesCompletadas + 1));
-					boolean resultadoFase = ControlData.leerBoolean(input);
-					vacuna.modificarFase(fasesCompletadas + 1, resultadoFase);
+					System.out.println("Introduce el resultado de la fase:" + (fasesCompletadas + 1));
+					System.out.println("Aprobar (a)/Rechazar (r)");
+					char resultado = ControlData.leerChar(input);
+					boolean resultadoFase = (resultado=='a'? true: false);
+					vacuna.modificarFase((byte)(fasesCompletadas + 1), resultadoFase);
 				} else {
 					System.out.println("No se puede modificar la fase:" + (fasesCompletadas + 1));
 					System.out.println("El resultado de la fase " + (fasesCompletadas) + " es:" + resultadoUltimaFase);
@@ -147,7 +188,7 @@ public class Aplicacion {
 		System.out.println("9- Ver vacunas pendientes de autorizar/rechazar");
 		System.out.println("10- Ver la última fase investida de cada vacuna almacenada");
 		System.out.println("11- Salir");
-
+		System.out.println("Introducir una opción:");
 	}
 
 }

@@ -89,11 +89,11 @@ manera (siempre que esté autorizada por la EMA).
     public String toString() {
 
         if (this.isVacunaAutorizada()) {
-            return "Código: " + codigo + " Nombre: " + nombre + "Principio Activo: " + principioActivo
-                    + "Farmaceutica: " + farmaceutica + "Precio:" + precioRecomendado;
+            return "Código: " + codigo + " Nombre: " + nombre + " Principio Activo: " + principioActivo
+                    + " Farmaceutica: " + farmaceutica + " Precio:" + precioRecomendado;
 
         } else {
-            return "Código: " + codigo + " Nombre: " + nombre + "Principio Activo: "
+            return "Código: " + codigo + " Nombre: " + nombre + " Principio Activo: "
                     + principioActivo;
 
         }
