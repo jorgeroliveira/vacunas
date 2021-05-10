@@ -129,6 +129,7 @@ public class Aplicacion {
         }
 
 	private static void introducirResultadoFases(VacAlmacen almacenVacunas, Scanner input) {
+		boolean resultadoFase;
 		System.out.print("Introduce el código de una vacuna:");
 		String codigoVacuna = ControlData.leerString(input);
 		Vacuna vacuna = almacenVacunas.buscarVacuna(codigoVacuna);
@@ -145,8 +146,22 @@ public class Aplicacion {
 					System.out.println("Introduce el resultado de la fase:" + (fasesCompletadas + 1));
 					System.out.println("Aprobar (a)/Rechazar (r)");
 					char resultado = ControlData.leerChar(input);
-					boolean resultadoFase = (resultado=='a'? true: false);
-					vacuna.modificarFase((byte)(fasesCompletadas + 1), resultadoFase);
+					
+					if (resultado=='a') {
+						resultadoFase = true;
+						vacuna.modificarFase((byte)(fasesCompletadas + 1), resultadoFase);
+					}
+					
+					if (resultado=='r') {
+						resultadoFase = false;
+						vacuna.modificarFase((byte)(fasesCompletadas + 1), resultadoFase);
+					}
+					
+					if ((resultado!='a') && (resultado!='r')) {
+						System.out.println("No se a introducido ni una 'a' ni una 'r'.");
+		                System.out.println("No se modifica el resultado de la fase "+(fasesCompletadas + 1)+ " de la vacuna: "+codigoVacuna);
+					}
+
 				} else {
 					System.out.println("No se puede modificar la fase:" + (fasesCompletadas + 1));
 					System.out.println("El resultado de la fase " + (fasesCompletadas) + " es:" + resultadoUltimaFase);

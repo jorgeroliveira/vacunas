@@ -26,47 +26,49 @@ public abstract class VacunaAutorizacion implements IAutorizable {
 	}
 
 	public boolean getResultadoUltimaFase() { // Devuelve el resultado de la investigación
-		boolean fase;
+		boolean resultadoFase;
 		byte aux = this.fasesCompletadas; // guardo en aux la ultima fase de la investigación
 
 		switch (aux) {
-		case 0: 	//si es la primera fase a introducir, la ultima fase a introducir es 0.
-			fase = true;  //entonces devolvemos un true para insertar el resultado de la primera fase.
+		case 0: // si es la primera fase a introducir, la ultima fase introducida es la 0.
+			resultadoFase = true; // entonces devolvemos un true para insertar el resultado de la primera fase.
 			break;
 		case 1:
-			fase = this.fase1Superada; // guardo el resultado en la variable retornada en la variable fase
+			resultadoFase = this.fase1Superada; // guardo el resultado en la variable retornada en la variable fase
 			break;
 		case 2:
-			fase = this.fase2Superada;
+			resultadoFase = this.fase2Superada;
 			break;
 		case 3:
-			fase = this.fase3Superada;
+			resultadoFase = this.fase3Superada;
 			break;
 		default:
-			fase = false;
+			resultadoFase = false;
 			break;
 		}
 
-		return fase;
+		return resultadoFase;
 	}
 
 	// metodo para modificar el valor de las fases superadas
 	// metodo case 5
 	public void modificarFase(byte fase, boolean resultadoFase) {
 
-		switch (fase) {
-		case 1:
-			this.fase1Superada = resultadoFase;
-			this.fasesCompletadas = fase;
-			break;
-		case 2:
-			this.fase2Superada = resultadoFase;
-			this.fasesCompletadas = fase;
-			break;
-		case 3:
-			this.fase3Superada = resultadoFase;
-			this.fasesCompletadas = fase;
-			break;
+		if (resultadoFase) {
+			switch (fase) {
+			case 1:
+				this.fase1Superada = resultadoFase;
+				this.fasesCompletadas = fase;
+				break;
+			case 2:
+				this.fase2Superada = resultadoFase;
+				this.fasesCompletadas = fase;
+				break;
+			case 3:
+				this.fase3Superada = resultadoFase;
+				this.fasesCompletadas = fase;
+				break;
+			}
 		}
 
 	}
@@ -101,9 +103,9 @@ public abstract class VacunaAutorizacion implements IAutorizable {
 			// una vacuna haya superado todas las fases (que podría ser).
 
 			this.rechazada = true;
-			
+
 		}
-        this.fechaResultado = LocalDate.now();
+		this.fechaResultado = LocalDate.now();
 		return this.rechazada;
 	}
 
@@ -115,28 +117,28 @@ public abstract class VacunaAutorizacion implements IAutorizable {
 		}
 		return false;
 	}
-        
-        public boolean isVacunaRechazada() {
+
+	public boolean isVacunaRechazada() {
 
 		if (this.rechazada == true) {
 			return true;
 		}
-                //cualquier otra cosa es falso
+		// cualquier otra cosa es falso
 		return false;
 	}
-        
-        public boolean isVacunaPendiente() {
+
+	public boolean isVacunaPendiente() {
 //            if ((this.rechazada != true) &&
 //               (this.rechazada != false) &&
 //               (this.autorizada != true) &&
 //               (this.autorizada != false)) {
-        	if ((this.rechazada == false) && (this.autorizada == false)) {
-                return true;
-            } else {
-            	return false;
-            }
-            
-        }
+		if ((this.rechazada == false) && (this.autorizada == false)) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
 
 	public byte getFasesCompletadas() {
 		return fasesCompletadas;
