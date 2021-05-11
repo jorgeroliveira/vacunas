@@ -6,7 +6,6 @@
 package gal.teis.vacunas;
 
 import java.util.Objects;
-import java.util.logging.Logger;
 
 /**
  *
@@ -89,12 +88,12 @@ manera (siempre que esté autorizada por la EMA).
     public String toString() {
 
         if (this.isVacunaAutorizada()) {
-            return "Código: " + codigo + " Nombre: " + nombre + " Principio Activo: " + principioActivo
-                    + " Farmaceutica: " + farmaceutica + " Precio:" + precioRecomendado;
+            return "Código: " + this.codigo + " Nombre: " + this.nombre + " Principio Activo: " + this.principioActivo
+                    + " Farmaceutica: " + this.farmaceutica + " Precio:" + this.precioRecomendado;
 
         } else {
-            return "Código: " + codigo + " Nombre: " + nombre + " Principio Activo: "
-                    + principioActivo;
+            return "Código: " + this.codigo + " Nombre: " + this.nombre + " Principio Activo: "
+                    + this.principioActivo;
 
         }
     }

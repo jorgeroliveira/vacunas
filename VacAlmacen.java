@@ -47,13 +47,7 @@ public class VacAlmacen {
 	}
 
 	public void agregar(Vacuna v) {
-//            String clave= v.getCodigo();
-//                   Vacuna valor = v;
-//		this.coleccion.put(clave, valor);
-
-                this.coleccion.put(v.getCodigo(), v);
-                
-                
+                this.coleccion.put(v.getCodigo(), v);                               
 	}
 
 	public void eliminar(String codigo) {

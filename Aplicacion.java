@@ -6,6 +6,8 @@
 package gal.teis.vacunas;
 
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -50,25 +52,25 @@ public class Aplicacion {
 				case 4:
 					System.out.print("Introduce el código de la vacuna a eliminar:");
 					String codigo = ControlData.leerString(input);
-                    almacenVacunas.eliminar(codigo);
+					almacenVacunas.eliminar(codigo);
 					break;
 				case 5:
 					introducirResultadoFases(almacenVacunas, input);
 					break;
 				case 6:
-                    autorizarRechazarVacuna(almacenVacunas, input);
+					autorizarRechazarVacuna(almacenVacunas, input);
 					break;
 				case 7:
-                    almacenVacunas.verVacunasAutorizadas();
+					almacenVacunas.verVacunasAutorizadas();
 					break;
 				case 8:
-                    almacenVacunas.verVacunasRechazadas();
+					almacenVacunas.verVacunasRechazadas();
 					break;
 				case 9:
 					almacenVacunas.verVacunasPendientes();
 					break;
 				case 10:
-                    almacenVacunas.verUltimaFaseInvestigada();
+					almacenVacunas.verUltimaFaseInvestigada();
 					break;
 
 				case 11:
@@ -85,48 +87,44 @@ public class Aplicacion {
 		} while (opcionMenu != 11);
 
 	}
-      
-        
-        private static void autorizarRechazarVacuna(VacAlmacen almacenVacunas, Scanner input){
-            System.out.print("Introduce el código de una vacuna:");
-            String codigoVacuna = ControlData.leerString(input);
-            Vacuna vacuna = almacenVacunas.buscarVacuna(codigoVacuna);
-            System.out.println(vacuna.toString());
-            
-            byte faseVacuna = vacuna.getFasesCompletadas();
-            boolean resultadoFaseVacuna = vacuna.getResultadoUltimaFase();
-            
-            if ((faseVacuna==3) && (resultadoFaseVacuna==true)) {
-            
-	            System.out.println("Autorizar o Rechazar esta vacuna (a/r)?");
-	            char accion = ControlData.leerChar(input);
-	            if (accion == 'a') {
-	                vacuna.autorizar();
-	            } else if (accion == 'r') {
-	                vacuna.rechazar();
-	            } else {
-	                System.out.println("No se a introducido ni una 'a' ni una 'r'.");
-	                System.out.println("No se autoriza ni rechaza la vacuna.");
-	            }
-            
-            } else {
-            	System.out.println("Esta vacuna no ha superado las tres fases. No se puede autorizar.");
-            	
-            	System.out.println("Desea Rechazar esta vacuna (s/n)?");
-	            char accion = ControlData.leerChar(input);
-	            if (accion == 's') {
-	            	vacuna.rechazar();
-	            	System.out.println("Vacuna rechazada.");
-	            } else {
-	            	System.out.println("Vacuna NO rechazada.");
-	            }
-            	
-            	
-            	
-            }
-                
-                
-        }
+
+	private static void autorizarRechazarVacuna(VacAlmacen almacenVacunas, Scanner input) {
+		System.out.print("Introduce el código de una vacuna:");
+		String codigoVacuna = ControlData.leerString(input);
+		Vacuna vacuna = almacenVacunas.buscarVacuna(codigoVacuna);
+		System.out.println(vacuna.toString());
+
+		byte faseVacuna = vacuna.getFasesCompletadas();
+		boolean resultadoFaseVacuna = vacuna.getResultadoUltimaFase();
+
+		if ((faseVacuna == 3) && (resultadoFaseVacuna == true)) {
+
+			System.out.println("Autorizar o Rechazar esta vacuna (a/r)?");
+			char accion = ControlData.leerChar(input);
+			if (accion == 'a') {
+				vacuna.autorizar();
+			} else if (accion == 'r') {
+				vacuna.rechazar();
+			} else {
+				System.out.println("No se a introducido ni una 'a' ni una 'r'.");
+				System.out.println("No se autoriza ni rechaza la vacuna.");
+			}
+
+		} else {
+			System.out.println("Esta vacuna no ha superado las tres fases. No se puede autorizar.");
+
+			System.out.println("Desea Rechazar esta vacuna (s/n)?");
+			char accion = ControlData.leerChar(input);
+			if (accion == 's') {
+				vacuna.rechazar();
+				System.out.println("Vacuna rechazada.");
+			} else {
+				System.out.println("Vacuna NO rechazada.");
+			}
+
+		}
+
+	}
 
 	private static void introducirResultadoFases(VacAlmacen almacenVacunas, Scanner input) {
 		boolean resultadoFase;
@@ -146,20 +144,21 @@ public class Aplicacion {
 					System.out.println("Introduce el resultado de la fase:" + (fasesCompletadas + 1));
 					System.out.println("Aprobar (a)/Rechazar (r)");
 					char resultado = ControlData.leerChar(input);
-					
-					if (resultado=='a') {
+
+					if (resultado == 'a') {
 						resultadoFase = true;
-						vacuna.modificarFase((byte)(fasesCompletadas + 1), resultadoFase);
+						vacuna.modificarFase((byte) (fasesCompletadas + 1), resultadoFase);
 					}
-					
-					if (resultado=='r') {
+
+					if (resultado == 'r') {
 						resultadoFase = false;
-						vacuna.modificarFase((byte)(fasesCompletadas + 1), resultadoFase);
+						vacuna.modificarFase((byte) (fasesCompletadas + 1), resultadoFase);
 					}
-					
-					if ((resultado!='a') && (resultado!='r')) {
+
+					if ((resultado != 'a') && (resultado != 'r')) {
 						System.out.println("No se a introducido ni una 'a' ni una 'r'.");
-		                System.out.println("No se modifica el resultado de la fase "+(fasesCompletadas + 1)+ " de la vacuna: "+codigoVacuna);
+						System.out.println("No se modifica el resultado de la fase " + (fasesCompletadas + 1)
+								+ " de la vacuna: " + codigoVacuna);
 					}
 
 				} else {
@@ -171,8 +170,19 @@ public class Aplicacion {
 	}
 
 	private static Vacuna crearNuevaVacuna(Scanner input) {
+
+		boolean codigoValido;
+		
 		System.out.println("Introduce el código de la nueva vacuna:");
-		String codigo = ControlData.leerString(input);
+		String codigo;
+		do {			
+			codigo = ControlData.leerString(input);
+			codigoValido = validarCodigoVacuna(codigo);
+			if (!codigoValido) {
+				System.out.println("El código introducido no es valido.");
+				System.out.println("Por favor, introduce un código valido:");
+			}
+		} while (!codigoValido);
 
 		System.out.println("Introduce el nombre de la nueva vacuna:");
 		String nombre = ControlData.leerString(input);
@@ -187,6 +197,20 @@ public class Aplicacion {
 		double precioRecomendado = ControlData.leerDouble(input);
 
 		return new Vacuna(codigo, nombre, principioActivo, farmaceutica, precioRecomendado);
+	}
+
+	private static boolean validarCodigoVacuna(String codigo) {
+
+		String expReg = "^V[A,E,I,O,U][a-z]{3,4}([4-7]{2}|[8])";
+		Pattern pat = Pattern.compile(expReg);
+		Matcher mat = pat.matcher(codigo);
+
+		if (mat.matches()) {
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 
 	private static void menu() {
